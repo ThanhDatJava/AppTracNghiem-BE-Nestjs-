@@ -1,3 +1,4 @@
+import { ResponseMessage } from './../../decorator/customize';
 import { Injectable } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
@@ -33,46 +34,6 @@ export class QuestionService {
   }
 
   fs = require('fs');
-
-  // async createDetailQuestion(detailQuestion: CreateQuestionDto) {
-  //   const {
-  //     category,
-  //     question_text,
-  //     options,
-  //     correct_answer,
-  //     explanation,
-  //     difficulty_level,
-  //     image, // image có thể là chuỗi Base64 hoặc đường dẫn tệp
-  //   } = detailQuestion;
-
-  //   let base64Image = '';
-
-  //   // Kiểm tra nếu image là chuỗi Base64
-  //   if (image.startsWith('data:image/')) {
-  //     // Nếu image là chuỗi Base64 (ví dụ: "data:image/jpeg;base64,...")
-  //     base64Image = image.split(',')[1]; // Tách bỏ phần metadata và lấy phần Base64
-  //   } else if (image) {
-  //     // Nếu image là đường dẫn tới tệp, đọc và chuyển thành Base64
-  //     const imageBuffer = this.fs.readFileSync(image);
-  //     base64Image = imageBuffer.toString('base64');
-  //   }
-
-  //   // Tạo câu hỏi mới trong cơ sở dữ liệu
-  //   const question = await this.questionModel.create({
-  //     category,
-  //     question_text,
-  //     options,
-  //     correct_answer,
-  //     explanation,
-  //     difficulty_level,
-  //     // image: base64Image, // Lưu chuỗi Base64 vào cơ sở dữ liệu
-  //     image,
-  //   });
-
-  //   return {
-  //     _id: question._id,
-  //   };
-  // }
 
   async createDetailQuestion(detailQuestion: CreateQuestionDto) {
     const {

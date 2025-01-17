@@ -83,10 +83,4 @@ export class AuthController {
     });
     return 'ok';
   }
-
-  @Post('create-detail-question')
-  @Public()
-  createDetailQuestion(@Body() detailQuestion: CreateQuestionDto) {
-    return this.questionService.createDetailQuestion(detailQuestion);
-  }
 }

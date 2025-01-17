@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { ResponseMessage } from './../../decorator/customize';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { Public } from '@/decorator/customize';
 
 @Controller('question')
 export class QuestionController {
@@ -23,12 +33,22 @@ export class QuestionController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQuestionDto: UpdateQuestionDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateQuestionDto: UpdateQuestionDto,
+  ) {
     return this.questionService.update(+id, updateQuestionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.questionService.remove(+id);
+  }
+
+  @Post('create-detail-question')
+  @ResponseMessage('Question created successfully')
+  @Public()
+  createDetailQuestion(@Body() detailQuestion: CreateQuestionDto) {
+    return this.questionService.createDetailQuestion(detailQuestion);
   }
 }
