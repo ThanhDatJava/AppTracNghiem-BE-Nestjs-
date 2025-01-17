@@ -2,15 +2,21 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '@/modules/users/users.service';
 import { comparePasswordHelper } from '@/helpers/util';
 import { JwtService } from '@nestjs/jwt';
-import { ChangePasswordAuthDto, CodeAuthDto, CreateAuthDto } from './dto/create-auth.dto';
+import {
+  ChangePasswordAuthDto,
+  CodeAuthDto,
+  CreateAuthDto,
+} from './dto/create-auth.dto';
+import { QuestionService } from '@/modules/question/question.service';
+import { CreateQuestionDto } from '@/modules/question/dto/create-question.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService
-  ) { }
-
+    private questionService: QuestionService,
+    private jwtService: JwtService,
+  ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findByEmail(username);
@@ -27,7 +33,7 @@ export class AuthService {
       user: {
         email: user.email,
         _id: user._id,
-        name: user.name
+        name: user.name,
       },
       access_token: this.jwtService.sign(payload),
     };
@@ -35,22 +41,21 @@ export class AuthService {
 
   handleRegister = async (registerDto: CreateAuthDto) => {
     return await this.usersService.handleRegister(registerDto);
-  }
+  };
 
   checkCode = async (data: CodeAuthDto) => {
     return await this.usersService.handleActive(data);
-  }
+  };
 
   retryActive = async (data: string) => {
     return await this.usersService.retryActive(data);
-  }
+  };
 
   retryPassword = async (data: string) => {
     return await this.usersService.retryPassword(data);
-  }
+  };
 
   changePassword = async (data: ChangePasswordAuthDto) => {
     return await this.usersService.changePassword(data);
-  }
-
+  };
 }

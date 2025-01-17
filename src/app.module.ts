@@ -18,10 +18,12 @@ import { JwtAuthGuard } from './auth/passport/jwt-auth.guard';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { TransformInterceptor } from '@/core/transform.interceptor';
+import { QuestionModule } from './modules/question/question.module';
 
 @Module({
   imports: [
     UsersModule,
+    QuestionModule,
     LikesModule,
     MenuItemOptionsModule,
     MenuItemsModule,
@@ -43,7 +45,7 @@ import { TransformInterceptor } from '@/core/transform.interceptor';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         transport: {
-          host: "smtp.gmail.com",
+          host: 'smtp.gmail.com',
           port: 465,
           secure: true,
           // ignoreTLS: true,
@@ -66,8 +68,8 @@ import { TransformInterceptor } from '@/core/transform.interceptor';
         },
       }),
       inject: [ConfigService],
-
     }),
+    QuestionModule,
   ],
   controllers: [AppController],
   providers: [
@@ -79,7 +81,7 @@ import { TransformInterceptor } from '@/core/transform.interceptor';
     {
       provide: APP_INTERCEPTOR,
       useClass: TransformInterceptor,
-    }
+    },
   ],
 })
-export class AppModule { }
+export class AppModule {}

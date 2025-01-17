@@ -1,21 +1,39 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './passport/local-auth.guard';
 import { Public, ResponseMessage } from '@/decorator/customize';
-import { ChangePasswordAuthDto, CodeAuthDto, CreateAuthDto } from './dto/create-auth.dto';
+import {
+  ChangePasswordAuthDto,
+  CodeAuthDto,
+  CreateAuthDto,
+} from './dto/create-auth.dto';
 import { MailerService } from '@nestjs-modules/mailer';
+import { CreateQuestionDto } from '@/modules/question/dto/create-question.dto';
+import { QuestionService } from '@/modules/question/question.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly mailerService: MailerService
-  ) { }
+    private readonly questionService: QuestionService,
 
-  @Post("login")
+    private readonly mailerService: MailerService,
+  ) {}
+
+  @Post('login')
   @Public()
   @UseGuards(LocalAuthGuard)
-  @ResponseMessage("Fetch login")
+  @ResponseMessage('Fetch login')
   handleLogin(@Request() req) {
     return this.authService.login(req.user);
   }
@@ -34,37 +52,41 @@ export class AuthController {
 
   @Post('retry-active')
   @Public()
-  retryActive(@Body("email") email: string) {
+  retryActive(@Body('email') email: string) {
     return this.authService.retryActive(email);
   }
 
   @Post('retry-password')
   @Public()
-  retryPassword(@Body("email") email: string) {
+  retryPassword(@Body('email') email: string) {
     return this.authService.retryPassword(email);
   }
-
-
 
   @Post('change-password')
   @Public()
   changePassword(@Body() data: ChangePasswordAuthDto) {
     return this.authService.changePassword(data);
   }
+
   @Get('mail')
   @Public()
   testMail() {
-    this.mailerService
-      .sendMail({
-        to: 'thanhdatjava@gmail.com', // list of receivers
-        subject: 'Testing Nest MailerModule ✔', // Subject line
-        text: 'welcome', // plaintext body
-        template: "register",
-        context: {
-          name: "Eric",
-          activationCode: 123456789
-        }
-      })
-    return "ok";
+    this.mailerService.sendMail({
+      to: 'thanhdatjava@gmail.com', // list of receivers
+      subject: 'Testing Nest MailerModule ✔', // Subject line
+      text: 'welcome', // plaintext body
+      template: 'register',
+      context: {
+        name: 'Eric',
+        activationCode: 123456789,
+      },
+    });
+    return 'ok';
+  }
+
+  @Post('create-detail-question')
+  @Public()
+  createDetailQuestion(@Body() detailQuestion: CreateQuestionDto) {
+    return this.questionService.createDetailQuestion(detailQuestion);
   }
 }
