@@ -1,8 +1,8 @@
 import { ResponseMessage } from './../../decorator/customize';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
-import { Model, Query } from 'mongoose';
+import mongoose, { Model, Query } from 'mongoose';
 import { Question } from './schemas/question.schemas';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -17,20 +17,8 @@ export class QuestionService {
     return 'This action adds a new question';
   }
 
-  findAll() {
-    return `This action returns all question`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
-  }
-
   update(id: number, updateQuestionDto: UpdateQuestionDto) {
     return `This action updates a #${id} question`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} question`;
   }
 
   fs = require('fs');
@@ -66,5 +54,32 @@ export class QuestionService {
     return {
       _id: question._id,
     };
+  }
+
+  async editDetailQuestion(updateQuestionDto: UpdateQuestionDto) {
+    return await this.questionModel.updateOne(
+      {
+        _id: updateQuestionDto._id,
+      },
+      { ...updateQuestionDto },
+    );
+  }
+
+  async deleteDetailQuestion(updateQuestionDto: UpdateQuestionDto) {
+    const { _id } = updateQuestionDto;
+    // Check if the provided ID is valid
+    if (!mongoose.isValidObjectId(_id)) {
+      throw new BadRequestException('Invalid or empty ID format');
+    }
+
+    const data = await this.questionModel.findOne({ _id });
+
+    if (data) {
+      // Delete the document and return the result (or just the deleted data)
+      await this.questionModel.deleteOne({ _id });
+      return { message: 'Document successfully deleted' };
+    } else {
+      throw new BadRequestException('Id không tồn tại');
+    }
   }
 }

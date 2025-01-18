@@ -22,16 +22,6 @@ export class QuestionController {
     return this.questionService.create(createQuestionDto);
   }
 
-  @Get()
-  findAll() {
-    return this.questionService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.questionService.findOne(+id);
-  }
-
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -40,15 +30,24 @@ export class QuestionController {
     return this.questionService.update(+id, updateQuestionDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.questionService.remove(+id);
-  }
-
   @Post('create-detail-question')
   @ResponseMessage('Question created successfully')
   @Public()
   createDetailQuestion(@Body() detailQuestion: CreateQuestionDto) {
     return this.questionService.createDetailQuestion(detailQuestion);
+  }
+
+  @Post('edit-detail-question')
+  @ResponseMessage('Question edit successfully')
+  @Public()
+  editDetailQuestion(@Body() updateQuestionDto: UpdateQuestionDto) {
+    return this.questionService.editDetailQuestion(updateQuestionDto);
+  }
+
+  @Post('delete-detail-question')
+  @ResponseMessage('Question edit successfully')
+  @Public()
+  deleteDetailQuestion(@Body() updateQuestionDto: UpdateQuestionDto) {
+    return this.questionService.deleteDetailQuestion(updateQuestionDto);
   }
 }
