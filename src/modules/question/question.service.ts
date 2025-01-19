@@ -13,14 +13,6 @@ export class QuestionService {
     private questionModel: Model<Question>,
   ) {}
 
-  create(createQuestionDto: CreateQuestionDto) {
-    return 'This action adds a new question';
-  }
-
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
-  }
-
   fs = require('fs');
 
   async createDetailQuestion(detailQuestion: CreateQuestionDto) {

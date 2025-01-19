@@ -17,19 +17,6 @@ import { Public } from '@/decorator/customize';
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Post()
-  create(@Body() createQuestionDto: CreateQuestionDto) {
-    return this.questionService.create(createQuestionDto);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateQuestionDto: UpdateQuestionDto,
-  ) {
-    return this.questionService.update(+id, updateQuestionDto);
-  }
-
   @Post('create-detail-question')
   @ResponseMessage('Question created successfully')
   @Public()
