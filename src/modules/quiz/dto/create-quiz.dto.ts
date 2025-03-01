@@ -4,8 +4,15 @@ import {
   IsArray,
   IsString,
   IsOptional,
+  IsEnum,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+
+export enum DifficultyLevel {
+  Easy = 'easy',
+  Medium = 'medium',
+  Hard = 'hard',
+}
 
 export class CreateQuizDto {
   // Tên quiz (tên của quiz, dễ nhận diện)
@@ -18,8 +25,14 @@ export class CreateQuizDto {
   @IsString({ message: 'Mô tả quiz phải là chuỗi' })
   description: string;
 
+  @IsNotEmpty({ message: 'Mức độ khó không được để trống' })
+  @IsEnum(DifficultyLevel, {
+    message: 'Mức độ khó phải là "easy", "medium" hoặc "hard"',
+  })
+  difficulty_level: DifficultyLevel;
+
   // Kiểm tra lựa chọn câu hỏi là mảng và không trống
-  @IsNotEmpty({ message: 'Lựa chọn câu hỏi không được để trống' })
+  @IsOptional({ message: 'Lựa chọn câu hỏi không được để trống' })
   @IsArray({ message: 'Lựa chọn câu hỏi phải là mảng' })
   @Transform(
     ({ value }) => (typeof value === 'string' ? value.split(',') : value),
@@ -29,8 +42,7 @@ export class CreateQuizDto {
 
   // Kiểm tra thời gian làm bài phải là số nguyên và không trống
   @IsNotEmpty({ message: 'Thời gian không được để trống' })
-  @IsInt({ message: 'Thời gian phải là một số nguyên' })
-  duration_minutes: number;
+  duration_minutes: string;
 
   @IsOptional()
   @IsString({ message: 'Ảnh phải là chuỗi' })

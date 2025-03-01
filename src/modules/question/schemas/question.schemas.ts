@@ -26,6 +26,12 @@ export class Question {
 
   @Prop()
   image: string;
+
+  // @Prop()
+  // _id_quiz: string;
+
+  @Prop({ type: [String] })
+  _id_quiz: string[];
 }
 
 export const QuestionSchema = SchemaFactory.createForClass(Question);

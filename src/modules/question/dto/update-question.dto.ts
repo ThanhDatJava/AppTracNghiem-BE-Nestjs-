@@ -1,42 +1,3 @@
-// import { PartialType } from '@nestjs/mapped-types';
-// import { CreateQuestionDto } from './create-question.dto';
-// import { IsEnum, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
-
-// export enum DifficultyLevel {
-//   Easy = 'easy',
-//   Medium = 'medium',
-//   Hard = 'hard',
-// }
-
-// export class UpdateQuestionDto extends PartialType(CreateQuestionDto) {
-//   @IsMongoId({ message: '_id không hợp lệ' })
-//   @IsNotEmpty({ message: '_id không được để trống' })
-//   _id: string;
-
-//   @IsOptional()
-//   category?: string; // Tùy chọn
-
-//   @IsOptional()
-//   question_text?: string; // Tùy chọn
-
-//   @IsOptional()
-//   options?: string[]; // Tùy chọn
-
-//   @IsOptional()
-//   correct_answer?: string; // Tùy chọn
-
-//   @IsOptional()
-//   explanation?: string; // Tùy chọn
-
-//   @IsOptional()
-//   @IsEnum(DifficultyLevel, {
-//     message: 'Mức độ khó phải là "easy", "medium" hoặc "hard"',
-//   })
-//   difficulty_level?: DifficultyLevel; // Tùy chọn
-
-//   image?: string; // Tùy chọn
-// }
-
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateQuestionDto } from './create-question.dto';
 import {
@@ -87,4 +48,13 @@ export class UpdateQuestionDto extends PartialType(CreateQuestionDto) {
   @IsOptional()
   @IsString({ message: 'Đường dẫn hình ảnh phải là một chuỗi' })
   image?: string; // Tùy chọn
+
+  // @IsOptional()
+  // @IsString({ message: '_id bài quiz phải là chuỗi' })
+  // _id_quiz?: string;
+
+  @IsOptional()
+  @IsArray({ message: '_id bài quiz là một mảng' })
+  @IsString({ each: true, message: 'mỗi _id bài quiz phải là một chuỗi' })
+  _id_quiz?: string[]; // Tùy chọn
 }

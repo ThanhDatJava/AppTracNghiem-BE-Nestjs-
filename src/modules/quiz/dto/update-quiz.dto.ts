@@ -3,6 +3,7 @@ import { CreateQuizDto } from './create-quiz.dto';
 import {
   IsArray,
   IsEmail,
+  IsEnum,
   IsInt,
   IsMongoId,
   IsNotEmpty,
@@ -10,6 +11,12 @@ import {
   IsString,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+
+export enum DifficultyLevel {
+  Easy = 'easy',
+  Medium = 'medium',
+  Hard = 'hard',
+}
 
 export class UpdateQuizDto extends PartialType(CreateQuizDto) {
   @IsMongoId({ message: '_id không hợp lệ' })
@@ -26,6 +33,10 @@ export class UpdateQuizDto extends PartialType(CreateQuizDto) {
   description?: string;
 
   @IsOptional()
+  @IsEnum(DifficultyLevel, { message: 'Mức độ khó không hợp lệ' })
+  difficulty_level?: DifficultyLevel; // Tùy chọn
+
+  @IsOptional()
   @IsArray({ message: 'Lựa chọn câu hỏi phải là mảng' })
   @Transform(
     ({ value }) => (typeof value === 'string' ? value.split(',') : value),
@@ -34,8 +45,8 @@ export class UpdateQuizDto extends PartialType(CreateQuizDto) {
   questions?: string[];
 
   @IsOptional()
-  @IsInt({ message: 'Thời gian phải là một số nguyên' })
-  duration_minutes?: number;
+  // @IsInt({ message: 'Thời gian phải là một số nguyên' })
+  duration_minutes?: string;
 
   @IsOptional()
   @IsString({ message: 'Ảnh phải là chuỗi' })

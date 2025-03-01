@@ -16,6 +16,27 @@ import { Public, ResponseMessage } from '@/decorator/customize';
 export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
+  @Get('get-detail-quiz')
+  @Public()
+  @ResponseMessage('Get detail quiz successfully')
+  async getDetailQuiz() {
+    return this.quizService.getDetailQuiz();
+  }
+
+  @Get('get-name-quiz')
+  @Public()
+  @ResponseMessage('Get name quiz successfully')
+  async getNameQuiz() {
+    return this.quizService.getNameQuiz();
+  }
+
+  @Post('get-detail-quiz-by-id')
+  @ResponseMessage('Get detail quiz edit successfully')
+  @Public()
+  getDetailQuizById(@Body() updateQuizDto: UpdateQuizDto) {
+    return this.quizService.getDetailQuizById(updateQuizDto);
+  }
+
   @Post('create-detail-quiz')
   @ResponseMessage('Quiz created successfully')
   @Public()
@@ -33,7 +54,14 @@ export class QuizController {
   @Post('delete-detail-quiz')
   @ResponseMessage('Quiz edit successfully')
   @Public()
-  deleteDetailQuiz(@Body() UpdateQuizDto: UpdateQuizDto) {
-    return this.quizService.deleteDetailQuiz(UpdateQuizDto);
+  deleteDetailQuiz(@Body() updateQuizDto: UpdateQuizDto) {
+    return this.quizService.deleteDetailQuiz(updateQuizDto);
+  }
+
+  @Post('get-name-by-id-quiz')
+  @ResponseMessage('Quiz created successfully')
+  @Public()
+  getNameByIdQuiz(@Body() updateQuizDto: UpdateQuizDto) {
+    return this.quizService.getNameByIdQuiz(updateQuizDto);
   }
 }

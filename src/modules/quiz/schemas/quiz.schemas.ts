@@ -11,6 +11,9 @@ export class Quiz {
   @Prop()
   description: string;
 
+  @Prop()
+  difficulty_level: string;
+
   // Đổi kiểu từ string thành mảng chuỗi (string[])
   @Prop({ type: [String] })
   questions: string[];

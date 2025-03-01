@@ -1,3 +1,4 @@
+import { QuizModule } from './quiz.module';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
@@ -9,8 +10,42 @@ import { InjectModel } from '@nestjs/mongoose';
 export class QuizService {
   constructor(
     @InjectModel(Quiz.name)
-    private questionModel: Model<Quiz>,
+    private quizModel: Model<Quiz>,
   ) {}
+
+  async getDetailQuiz() {
+    const data = await this.quizModel.find();
+
+    if (data) {
+      // Delete the document and return the result (or just the deleted data)
+      return data;
+    } else {
+      throw new BadRequestException('Id không tồn tại');
+    }
+  }
+  async getNameQuiz() {
+    const data = await this.quizModel.find().select('quiz_name');
+
+    if (data) {
+      // Delete the document and return the result (or just the deleted data)
+      return data;
+    } else {
+      throw new BadRequestException('Id không tồn tại');
+    }
+  }
+
+  async getDetailQuizById(updateQuizDto: UpdateQuizDto) {
+    const data = await this.quizModel.find({
+      _id: updateQuizDto._id,
+    });
+
+    if (data) {
+      // Delete the document and return the result (or just the deleted data)
+      return data;
+    } else {
+      throw new BadRequestException('Id không tồn tại');
+    }
+  }
 
   fs = require('fs');
 
@@ -18,33 +53,33 @@ export class QuizService {
     const {
       quiz_name,
       description,
-      questions, // options sẽ là mảng chuỗi sau khi xử lý trong DTO
       duration_minutes,
       image,
+      difficulty_level,
     } = detailQuiz;
 
     // Kiểm tra và xử lý chuỗi Base64 của hình ảnh
     let base64Image = '';
     if (image) {
-      base64Image = image.split(',')[1]; // Nếu hình ảnh là Base64
+      base64Image = image;
     }
 
     // Tạo câu hỏi mới trong cơ sở dữ liệu
-    const question = await this.questionModel.create({
+    const quiz = await this.quizModel.create({
       quiz_name,
       description,
-      questions, // options đã là mảng chuỗi
       duration_minutes,
       image: base64Image,
+      difficulty_level,
     });
 
     return {
-      _id: question._id,
+      _id: quiz._id,
     };
   }
 
   async editDetailQuiz(updateQuizDto: UpdateQuizDto) {
-    return await this.questionModel.updateOne(
+    return await this.quizModel.updateOne(
       {
         _id: updateQuizDto._id,
       },
@@ -59,12 +94,30 @@ export class QuizService {
       throw new BadRequestException('Invalid or empty ID format');
     }
 
-    const data = await this.questionModel.findOne({ _id });
+    const data = await this.quizModel.findOne({ _id });
 
     if (data) {
       // Delete the document and return the result (or just the deleted data)
-      await this.questionModel.deleteOne({ _id });
+      await this.quizModel.deleteOne({ _id });
       return { message: 'Document successfully deleted' };
+    } else {
+      throw new BadRequestException('Id không tồn tại');
+    }
+  }
+
+  async getNameByIdQuiz(updateQuizDto: UpdateQuizDto) {
+    const { _id } = updateQuizDto;
+    // Check if the provided ID is valid
+    if (!mongoose.isValidObjectId(_id)) {
+      throw new BadRequestException('Invalid or empty ID format');
+    }
+
+    const data = await this.quizModel.findOne({ _id });
+
+    if (data) {
+      // Delete the document and return the result (or just the deleted data)
+      return { quiz_name: data.quiz_name };
+      // return { message: 'Document successfully deleted' };
     } else {
       throw new BadRequestException('Id không tồn tại');
     }

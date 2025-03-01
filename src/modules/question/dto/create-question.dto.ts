@@ -48,4 +48,16 @@ export class CreateQuestionDto {
   @IsOptional()
   @IsString({ message: 'Ảnh phải là chuỗi' })
   image?: string;
+
+  // @IsOptional()
+  // @IsString({ message: '_id bài quiz phải là chuỗi' })
+  // _id_quiz?: string;
+
+  @IsOptional({ message: '_id bài quiz không được để trống' })
+  @IsArray({ message: '_id bài quiz phải là mảng' })
+  @Transform(
+    ({ value }) => (typeof value === 'string' ? value.split(',') : value),
+    { toClassOnly: true },
+  ) // Chuyển chuỗi thành mảng
+  _id_quiz: string[];
 }

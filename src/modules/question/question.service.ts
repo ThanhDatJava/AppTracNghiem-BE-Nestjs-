@@ -5,6 +5,7 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 import mongoose, { Model, Query } from 'mongoose';
 import { Question } from './schemas/question.schemas';
 import { InjectModel } from '@nestjs/mongoose';
+import { IdQuizDto } from './dto/id-quiz.dto';
 
 @Injectable()
 export class QuestionService {
@@ -15,7 +16,7 @@ export class QuestionService {
 
   fs = require('fs');
 
-  async createDetailQuestion(detailQuestion: CreateQuestionDto) {
+  async createDetailQuestion(createQuestionDto: CreateQuestionDto) {
     const {
       category,
       question_text,
@@ -24,12 +25,13 @@ export class QuestionService {
       explanation,
       difficulty_level,
       image, // Hình ảnh dạng Base64
-    } = detailQuestion;
+      _id_quiz,
+    } = createQuestionDto;
 
     // Kiểm tra và xử lý chuỗi Base64 của hình ảnh
     let base64Image = '';
     if (image) {
-      base64Image = image.split(',')[1]; // Nếu hình ảnh là Base64
+      base64Image = image;
     }
 
     // Tạo câu hỏi mới trong cơ sở dữ liệu
@@ -41,6 +43,7 @@ export class QuestionService {
       explanation,
       difficulty_level,
       image: base64Image, // Lưu chuỗi Base64 của hình ảnh
+      _id_quiz,
     });
 
     return {
@@ -73,5 +76,28 @@ export class QuestionService {
     } else {
       throw new BadRequestException('Id không tồn tại');
     }
+  }
+
+  async getDetailQuestion() {
+    const data = await this.questionModel.find();
+
+    if (data) {
+      // Delete the document and return the result (or just the deleted data)
+      return data;
+    } else {
+      throw new BadRequestException('Id không tồn tại');
+    }
+  }
+
+  async getDetailQuestionByIdQuiz(idQuizDto: IdQuizDto) {
+    const { _id_quiz } = idQuizDto;
+
+    const question = await this.questionModel.find({
+      _id_quiz: { $in: _id_quiz.map((id) => id) }, // Chuyển chuỗi thành ObjectId
+    });
+
+    return {
+      question,
+    };
   }
 }
