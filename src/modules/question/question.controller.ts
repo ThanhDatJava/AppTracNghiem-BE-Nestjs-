@@ -41,6 +41,13 @@ export class QuestionController {
     return this.questionService.createDetailQuestion(createQuestionDto);
   }
 
+  @Post('create-detail-question-to-word')
+  @ResponseMessage('Created Question To Word successfully')
+  @Public()
+  createDetailQuestionToWord(@Body() createQuestionDto: CreateQuestionDto) {
+    return this.questionService.createDetailQuestionToWord(createQuestionDto);
+  }
+
   @Post('edit-detail-question')
   @ResponseMessage('Question edit successfully')
   @Public()

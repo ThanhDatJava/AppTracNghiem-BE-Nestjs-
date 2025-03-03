@@ -6,9 +6,6 @@ export type QuestionDocument = HydratedDocument<Question>;
 @Schema({ timestamps: true })
 export class Question {
   @Prop()
-  category: string;
-
-  @Prop()
   question_text: string;
 
   // Đổi kiểu từ string thành mảng chuỗi (string[])
@@ -19,16 +16,7 @@ export class Question {
   correct_answer: string;
 
   @Prop()
-  explanation: string;
-
-  @Prop()
-  difficulty_level: string;
-
-  @Prop()
   image: string;
-
-  // @Prop()
-  // _id_quiz: string;
 
   @Prop({ type: [String] })
   _id_quiz: string[];

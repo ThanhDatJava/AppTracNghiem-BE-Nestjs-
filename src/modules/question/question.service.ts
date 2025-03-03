@@ -18,12 +18,9 @@ export class QuestionService {
 
   async createDetailQuestion(createQuestionDto: CreateQuestionDto) {
     const {
-      category,
       question_text,
       options, // options sẽ là mảng chuỗi sau khi xử lý trong DTO
       correct_answer,
-      explanation,
-      difficulty_level,
       image, // Hình ảnh dạng Base64
       _id_quiz,
     } = createQuestionDto;
@@ -36,12 +33,38 @@ export class QuestionService {
 
     // Tạo câu hỏi mới trong cơ sở dữ liệu
     const question = await this.questionModel.create({
-      category,
       question_text,
       options, // options đã là mảng chuỗi
       correct_answer,
-      explanation,
-      difficulty_level,
+      image: base64Image, // Lưu chuỗi Base64 của hình ảnh
+      _id_quiz,
+    });
+
+    return {
+      _id: question._id,
+    };
+  }
+
+  async createDetailQuestionToWord(createQuestionDto: CreateQuestionDto) {
+    const {
+      question_text,
+      options, // options sẽ là mảng chuỗi sau khi xử lý trong DTO
+      correct_answer,
+      image, // Hình ảnh dạng Base64
+      _id_quiz,
+    } = createQuestionDto;
+
+    // Kiểm tra và xử lý chuỗi Base64 của hình ảnh
+    let base64Image = '';
+    if (image) {
+      base64Image = image;
+    }
+
+    // Tạo câu hỏi mới trong cơ sở dữ liệu
+    const question = await this.questionModel.create({
+      question_text,
+      options, // options đã là mảng chuỗi
+      correct_answer,
       image: base64Image, // Lưu chuỗi Base64 của hình ảnh
       _id_quiz,
     });

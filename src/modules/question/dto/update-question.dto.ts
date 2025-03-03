@@ -49,10 +49,6 @@ export class UpdateQuestionDto extends PartialType(CreateQuestionDto) {
   @IsString({ message: 'Đường dẫn hình ảnh phải là một chuỗi' })
   image?: string; // Tùy chọn
 
-  // @IsOptional()
-  // @IsString({ message: '_id bài quiz phải là chuỗi' })
-  // _id_quiz?: string;
-
   @IsOptional()
   @IsArray({ message: '_id bài quiz là một mảng' })
   @IsString({ each: true, message: 'mỗi _id bài quiz phải là một chuỗi' })
