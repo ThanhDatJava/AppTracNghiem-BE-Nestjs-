@@ -13,6 +13,7 @@ import { TransformInterceptor } from '@/core/transform.interceptor';
 import { QuestionModule } from './modules/question/question.module';
 import { QuizModule } from './modules/quiz/quiz.module';
 import { AchievementModule } from './modules/achievement/achievement.module';
+import { ClassroomModule } from './modules/classroom/classroom.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AchievementModule } from './modules/achievement/achievement.module';
     QuestionModule,
     QuizModule,
     AchievementModule,
+    ClassroomModule,
 
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
@@ -61,6 +63,7 @@ import { AchievementModule } from './modules/achievement/achievement.module';
     QuestionModule,
     QuizModule,
     AchievementModule,
+    ClassroomModule,
   ],
   controllers: [AppController],
   providers: [

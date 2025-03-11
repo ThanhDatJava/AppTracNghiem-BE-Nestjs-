@@ -23,6 +23,7 @@ export class QuizService {
       throw new BadRequestException('Id không tồn tại');
     }
   }
+
   async getNameQuiz() {
     const data = await this.quizModel.find().select('quiz_name');
 
